@@ -105,6 +105,42 @@ class AuthController extends AbstractController
         );
     }
 
-    
+    /**
+     *logout a user.
+     *
+     * @Route(
+     *     "deconexion",
+     *     methods={"POST"}
+     * )
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws \HttpRequestException
+     */
+    public function deconexion(Request $request)
+    {
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+
+        $token = $request->get('token');
+
+        if (null === $token) {
+            throw new \HttpRequestException();
+        }
+        $user = $userRepository->findOneBy(['apiToken' => $token]);
+        // il manque la gestion d'erreur si il ne trouve pas l'utilisateur
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        
+        return new JsonResponse(
+            [
+                'logout' =>' utilisateur avec cette email '. $user->getEmail().' a etais deconnecter', // token a revoir 
+            ]
+        );
+    }
 
 }
