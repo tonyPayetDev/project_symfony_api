@@ -60,7 +60,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     {
         // Check credentials - e.g. make sure the password is valid.
         // In case of an API token, no credential check is needed.
-
+       // dd($user);
         // Return `true` to cause authentication success
         return true;
     }
